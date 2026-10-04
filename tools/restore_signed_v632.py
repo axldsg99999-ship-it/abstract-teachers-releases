@@ -25,13 +25,13 @@ with base.open('rb') as a,payload.open('rb') as b,target.open('wb') as out:
    data=f.read(min(count,1024*1024));assert data
    out.write(data);count-=len(data)
 assert target.stat().st_size==m['target_size'] and sha(target)==expected
-release=json.loads(gh('api',f'repos/{repo}/releases/tags/{tag}'));assert release['draft']
+release=json.loads(gh('api',f'repos/{repo}/releases/402811113'));assert release['draft'] and release['tag_name']==tag
 existing=next((x for x in release['assets'] if x['name']==m['target_name']),None)
 if existing:
  if existing['state']=='starter':gh('api','--method','DELETE',f'repos/{repo}/releases/assets/{existing["id"]}');existing=None
  else:assert existing['state']=='uploaded' and existing['digest']=='sha256:'+expected
 if not existing:gh('release','upload',tag,str(target),'--repo',repo)
-release=json.loads(gh('api',f'repos/{repo}/releases/tags/{tag}'))
+release=json.loads(gh('api',f'repos/{repo}/releases/402811113'))
 asset=next(x for x in release['assets'] if x['name']==m['target_name'])
 assert asset['state']=='uploaded' and asset['size']==m['target_size'] and asset['digest']=='sha256:'+expected
 print('Verified reconstructed signed APK:',asset['size'],asset['digest'],flush=True)
