@@ -1,0 +1,21 @@
+name: Restore verified V6.3.5 Android package
+on:
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: restore-verified-v635
+  cancel-in-progress: false
+jobs:
+  restore:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - name: Read the reviewed restoration script
+        shell: bash
+        run: |
+          gh api repos/axldsg99999-ship-it/abstract-teachers-releases/contents/tools/restore_signed_v635.py --jq '.content' | base64 --decode > restore.py
+      - name: Restore and verify the existing signature byte for byte
+        run: python3 restore.py
