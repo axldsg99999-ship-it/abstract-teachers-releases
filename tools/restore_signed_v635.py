@@ -2,7 +2,7 @@
 from pathlib import Path
 import subprocess,json,hashlib
 repo='axldsg99999-ship-it/abstract-teachers-releases';tag='v6.3.5'
-expected='9ce3943dbf7009ca1a301583d5c1f9f9c1b2edb5f65a1f6accc40cb953f9bcbb'
+expected='343badd4ec5035b434bfea67bb8c1d7388fc960aee78961ebd422ffd477b479e'
 def gh(*args):return subprocess.check_output(['gh',*args],text=True)
 def sha(path):
  with path.open('rb') as f:return hashlib.file_digest(f,'sha256').hexdigest()
